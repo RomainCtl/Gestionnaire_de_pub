@@ -1,4 +1,3 @@
-
 public class Deroulant extends Mecanique implements TmpAffichage {
 	private static final long serialVersionUID = 1L;
 	
