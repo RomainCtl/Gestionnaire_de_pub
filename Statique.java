@@ -1,4 +1,3 @@
-
 public class Statique extends Mecanique {
 	private static final long serialVersionUID = 1L;
 
