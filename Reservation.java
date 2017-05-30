@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Reservation implements ajoutSuppr,modif,Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	public int numRes;
+	public String numRes;
 	private Emplacements emp;
 	private Clients clt;
 	private Date dtdeb;
@@ -21,10 +22,12 @@ public class Reservation implements ajoutSuppr,modif,Serializable {
 	private long dure;
 	
 	public Reservation(Emplacements e, Clients c, Date d, Date f) {
-		File fil = new File(".\\reservation");
-		File[] listFile = fil.listFiles();
-		
-		numRes=listFile.length+1;
+		numRes="";
+		for (int i=0 ; i<10 ; i++){
+			Random rand = new Random();
+			int nbtmp = rand.nextInt(9 - 0 + 1) + 0;
+			numRes+=nbtmp;
+		}
 		setEmp(e);
 		setClt(c);
 		dtdeb=d;
@@ -194,11 +197,11 @@ public class Reservation implements ajoutSuppr,modif,Serializable {
 		this.dtfin = dtfin;
 	}
 	
-	public int getNumRes() {
+	public String getNumRes() {
 		return numRes;
 	}
 
-	public void setNumRes(int numRes) {
+	public void setNumRes(String numRes) {
 		this.numRes = numRes;
 	}
 }
