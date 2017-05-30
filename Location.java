@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Location implements ajoutSuppr,modif,Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	public int numLoc;
+	public String numLoc;
 	private Emplacements emp;
 	private Clients clt;
 	private Calendar dtdeb;
@@ -21,10 +22,12 @@ public class Location implements ajoutSuppr,modif,Serializable {
 	private long dure;
 	
 	public Location(Emplacements e, Clients c, Date f) {
-		File fil = new File(".\\location");
-		File[] listFile = fil.listFiles();
-		
-		numLoc=listFile.length+1;
+		numLoc="";
+		for (int i=0 ; i<10 ; i++){
+			Random rand = new Random();
+			int nbtmp = rand.nextInt(9 - 0 + 1) + 0;
+			numLoc+=nbtmp;
+		}
 		setEmp(e);
 		setClt(c);
 		dtdeb=Calendar.getInstance();
@@ -179,11 +182,11 @@ public class Location implements ajoutSuppr,modif,Serializable {
 		this.dtfin = dtfin;
 	}
 
-	public int getNumLoc() {
+	public String getNumLoc() {
 		return numLoc;
 	}
 
-	public void setNumLoc(int numLoc) {
+	public void setNumLoc(String numLoc) {
 		this.numLoc = numLoc;
 	}
 }
