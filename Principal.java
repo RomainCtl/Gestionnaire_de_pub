@@ -53,7 +53,7 @@ public class Principal {
 		
 		//variable
 		boolean b = true;
-		boolean b1, b2, b3, b4, bbb, bbb2, bbb3, tt, ttt;
+		boolean b1, b2, b3, b4, bbb, bbb2, bbb3, tt, ttt, vv, vvv, vvv2, rb, rb1, rb2;
 		String n, n2, n3, n4, n5;
 		Clients c, cc, ccc;
 		Emplacements e, ee;
@@ -62,6 +62,8 @@ public class Principal {
 		Colonne col;
 		Deroulant d;
 		Statique s;
+		Location l, ll, ll2;
+		Reservation r, rr, rrr;
 		
 		while (b){
 			System.out.println("##########################");
@@ -130,7 +132,7 @@ public class Principal {
 						break;
 					case "5":
 						System.out.println("Supprimer");
-						System.out.println("Entrs le maximum d'information ci-dessous afin de trouver un client.");
+						System.out.println("Entre le maximum d'information ci-dessous afin de trouver un client.");
 						bbb3 = true;
 						ccc=null;
 						while(bbb3){
@@ -246,14 +248,48 @@ public class Principal {
 						afficherLocations();
 						break;
 					case "2":
-						rechercherLocation();
+						System.out.println("Detail d'une location");
+						System.out.println("Entre le maximum d'information ci-dessous afin de trouver une location.");
+						vv=true;
+						l=null;
+						while(vv){
+							l=rechercherLocation();
+							if (l!=null){
+								vv=false;
+							}
+						}
+						l.afficher();
 						break;
 					case "3":
 						ajouterLocation();
 						break;
 					case "4":
+						System.out.println("Modifier une location");
+						System.out.println("Entre le maximum d'information ci-dessous afin de trouver une location.");
+						vvv=true;
+						ll=null;
+						while(vvv){
+							ll=rechercherLocation();
+							if (ll!=null){
+								vvv=false;
+							}
+						}
+						ll.modifier();
+						//enregistrer
+						ll.ajouter();
 						break;
 					case "5":
+						System.out.println("Supprimer une location");
+						System.out.println("Entre le maximum d'information ci-dessous afin de trouver une location.");
+						vvv2=true;
+						ll2=null;
+						while(vvv2){
+							ll2=rechercherLocation();
+							if (ll2!=null){
+								vvv2=false;
+							}
+						}
+						ll2.supprimer();
 						break;
 					case "6":
 						b3=false;
@@ -283,14 +319,48 @@ public class Principal {
 						afficherReservations();
 						break;
 					case "2":
-						rechercherReservation();
+						System.out.println("Detail d'une reservation");
+						System.out.println("Entre le maximum d'information ci-dessous afin de trouver une reservation.");
+						rb=true;
+						r=null;
+						while (rb){
+							r=rechercherReservation();
+							if (r!=null){
+								rb=false;
+							}
+						}
+						r.afficher();
 						break;
 					case "3":
 						ajouterReservation();
 						break;
 					case "4":
+						System.out.println("Modifier une reservation");
+						System.out.println("Entre le maximum d'information ci-dessous afin de trouver une reservation.");
+						rb1=true;
+						rr=null;
+						while (rb1){
+							rr=rechercherReservation();
+							if (rr!=null){
+								rb1=false;
+							}
+						}
+						rr.modifier();
+						//enregistrer
+						rr.ajouter();
 						break;
 					case "5":
+						System.out.println("Supprimer une reservation");
+						System.out.println("Entre le maximum d'information ci-dessous afin de trouver une reservation.");
+						rb2=true;
+						rrr=null;
+						while (rb2){
+							rrr=rechercherReservation();
+							if (rrr!=null){
+								rb2=false;
+							}
+						}
+						rrr.supprimer();
 						break;
 					case "6":
 						b4=false;
@@ -457,7 +527,7 @@ public class Principal {
 				}
 			}
 		} catch (FileNotFoundException en) {
-			System.out.println("Emplacement inexsistant, Attention ï¿½ ne pas faire de faute dans les informations entrï¿½es !");
+			System.out.println("Emplacement inexsistant, Attention a ne pas faire de faute dans les informations entrees !");
 			//en.printStackTrace();
 		} catch (IOException en) {
 			System.out.println("Erreur !! Impossible de deserialize le fichier");
