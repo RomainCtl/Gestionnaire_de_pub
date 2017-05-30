@@ -189,4 +189,14 @@ public class Location implements ajoutSuppr,modif,Serializable {
 	public void setNumLoc(String numLoc) {
 		this.numLoc = numLoc;
 	}
+	
+	
+	public void afficher(){
+		System.out.println("Numero de location: "+numLoc);
+		System.out.println("Emplacement: "+emp.nump);
+		System.out.println("Client: "+clt.numc);
+		System.out.println("Date de debut: "+this.getDtdeb().toString());
+		System.out.println("Date de fin: "+this.getDtfin().toString());
+		System.out.println("Duree: "+this.duree()+" jours");
+	}
 }
