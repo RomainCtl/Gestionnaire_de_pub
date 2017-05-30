@@ -204,4 +204,13 @@ public class Reservation implements ajoutSuppr,modif,Serializable {
 	public void setNumRes(String numRes) {
 		this.numRes = numRes;
 	}
+	
+	public void afficher(){
+		System.out.println("Numero de reservation: "+numRes);
+		System.out.println("Emplacement: "+emp.nump);
+		System.out.println("Client: "+clt.numc);
+		System.out.println("Date de debut: "+this.getDtdeb().toString());
+		System.out.println("Date de fin: "+this.getDtfin().toString());
+		System.out.println("Duree: "+this.duree()+" jours");
+	}
 }
