@@ -32,7 +32,12 @@ public abstract class Emplacements implements ajoutSuppr,ajoutLocRes,Serializabl
 		File fil = new File(".\\emplacement");
 		File[] listFile = fil.listFiles();
 		
-		nump=listFile.length+1;
+		String tmp="";
+		for (File fi : listFile){
+			tmp=fi.getName();
+		}
+		
+		nump=Integer.parseInt(tmp)+1;
 		format=f;
 		visibilite=v;
 		adress=a;
