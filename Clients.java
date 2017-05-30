@@ -44,7 +44,7 @@ public class Clients implements ajoutSuppr,ajoutLocRes,modif,Serializable {
 	@Override
 	public void ajouter() {
 		try {
-			FileOutputStream fil = new FileOutputStream(".\\client\\"+numc+"£"+nom+"£"+nomEnt);
+			FileOutputStream fil = new FileOutputStream(".\\client\\"+numc+"$"+nom+"$"+nomEnt);
 			ObjectOutputStream obj= new ObjectOutputStream(fil);
 			
 			try {
@@ -68,7 +68,7 @@ public class Clients implements ajoutSuppr,ajoutLocRes,modif,Serializable {
 
 	@Override
 	public void supprimer() {
-		File fil = new File(".\\client\\"+numc+"£"+nom+"£"+nomEnt);
+		File fil = new File(".\\client\\"+numc+"$"+nom+"$"+nomEnt);
 		fil.delete(); 
 	}
 	
@@ -130,15 +130,19 @@ public class Clients implements ajoutSuppr,ajoutLocRes,modif,Serializable {
 		}
 		
 		Scanner scann = new Scanner(System.in);
-				
-		//Date de fin
-		System.out.println("Date de fin de la location");
-		System.out.println("Année :");
-		int an=scann.nextInt();
-		System.out.println("Mois : ");
-		int mois=scann.nextInt();
-		System.out.println("Jour : ");
-		int jour=scann.nextInt();
+		
+		int an, mois, jour;
+		
+		do {
+			//Date de fin
+			System.out.println("Date de fin de la location");
+			System.out.println("Année :");
+			an=scann.nextInt();
+			System.out.println("Mois : ");
+			mois=scann.nextInt();
+			System.out.println("Jour : ");
+			jour=scann.nextInt();
+		} while (Principal.verifFormatDate(jour, mois, an));
 				
 		scann.close();
 			
@@ -168,26 +172,32 @@ public class Clients implements ajoutSuppr,ajoutLocRes,modif,Serializable {
 		
 		Scanner scann = new Scanner(System.in);
 		
-		//Date de debut
-		System.out.println("Date de debut de la location");
-		System.out.println("Année :");
-		int an=scann.nextInt();
-		System.out.println("Mois : ");
-		int mois=scann.nextInt();
-		System.out.println("Jour : ");
-		int jour=scann.nextInt();
-				
+		int an, mois, jour, an2, jour2, mois2;
+		
+		do {
+			//Date de debut
+			System.out.println("Date de debut de la location");
+			System.out.println("Année :");
+			an=scann.nextInt();
+			System.out.println("Mois : ");
+			mois=scann.nextInt();
+			System.out.println("Jour : ");
+			jour=scann.nextInt();
+		} while(Principal.verifFormatDate(jour, mois, an));
+		
 		GregorianCalendar g=new GregorianCalendar(an,mois,jour);
 		Date deb= g.getGregorianChange();
-				
-		//Date de fin
-		System.out.println("Date de fin de la location");
-		System.out.println("Année :");
-		int an2=scann.nextInt();
-		System.out.println("Mois : ");
-		int mois2=scann.nextInt();
-		System.out.println("Jour : ");
-		int jour2=scann.nextInt();
+		
+		do {
+			//Date de fin
+			System.out.println("Date de fin de la location");
+			System.out.println("Année :");
+			an2=scann.nextInt();
+			System.out.println("Mois : ");
+			mois2=scann.nextInt();
+			System.out.println("Jour : ");
+			jour2=scann.nextInt();
+		} while (Principal.verifFormatDate(jour2, mois2, an2));
 				
 		GregorianCalendar g2=new GregorianCalendar(an2,mois2,jour2);
 		Date fin= g2.getGregorianChange();
