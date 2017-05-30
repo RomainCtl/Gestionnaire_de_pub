@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public abstract class Emplacements implements ajoutSuppr,ajoutLocRes,Serializable {
@@ -22,7 +24,7 @@ public abstract class Emplacements implements ajoutSuppr,ajoutLocRes,Serializabl
 	public double y;
 	public String type;
 	public String adress;
-	private ArrayList <Location> tabrecap;
+	private  HashMap <Date, Date> tabrecap;
 	public ArrayList <Location> locEnCour;
 	private ArrayList <Reservation> tabreserv;
 	
@@ -39,7 +41,7 @@ public abstract class Emplacements implements ajoutSuppr,ajoutLocRes,Serializabl
 		this.x=x; //le x et le y correspondent a la localisation de l'emplacement sur la carte
 		this.y=y;
 		locEnCour = new ArrayList <Location> (m);
-		tabrecap= new ArrayList <Location> (M);//recapitulatif de quoi?
+		tabrecap= new HashMap <Date, Date> (M);//recapitulatif de quoi?
 		tabreserv= new ArrayList <Reservation> (M);
 	}
 	
@@ -89,38 +91,52 @@ public abstract class Emplacements implements ajoutSuppr,ajoutLocRes,Serializabl
 		}
 		
 		Scanner scann = new Scanner(System.in);
-				
-		//Date de fin
-		System.out.println("Date de fin de la location");
-		System.out.println("Année :");
-		int an=scann.nextInt();
-		System.out.println("Mois : ");
-		int mois=scann.nextInt();
-		System.out.println("Jour : ");
-		int jour=scann.nextInt();
+		
+		int jour, mois, an;
+		
+		do {
+			//Date de fin
+			System.out.println("Date de fin de la location");
+			System.out.println("Année :");
+			an=scann.nextInt();
+			System.out.println("Mois : ");
+			mois=scann.nextInt();
+			System.out.println("Jour : ");
+			jour=scann.nextInt();
+		} while (Principal.verifFormatDate(jour, mois, an));
+		
 				
 		scann.close();
 			
 		GregorianCalendar g=new GregorianCalendar(an,mois,jour);
 		Date d= g.getGregorianChange();
-				
-		//creation
-		Location l = new Location(this,c,d);
 		
-		//ajout
-		ArrayList <Location> tmp1 = this.getTabLocEnCour();
-		tmp1.add(l);
-		this.setTabLocEnCour(tmp1);
-		
-		//ajout pour le client
-		ArrayList<Location> tmp2 = c.getTabloc();
-		tmp2.add(l);
-		c.setTabloc(tmp2);
-		
-		//enregistrement
-		l.ajouter();
-		this.ajouter();
-		c.ajouter();
+		if (verifDate(Calendar.getInstance().getTime(), d)){
+			//creation
+			Location l = new Location(this,c,d);
+			
+			//ajout
+			ArrayList <Location> tmp1 = this.getTabLocEnCour();
+			tmp1.add(l);
+			this.setTabLocEnCour(tmp1);
+			
+			//ajout des date pour le tabrecap
+			HashMap <Date,Date> tmp = this.getTabrecap();
+			tmp.put(Calendar.getInstance().getTime(), d);
+			this.setTabrecap(tmp);
+			
+			//ajout pour le client
+			ArrayList<Location> tmp2 = c.getTabloc();
+			tmp2.add(l);
+			c.setTabloc(tmp2);
+			
+			//enregistrement
+			l.ajouter();
+			this.ajouter();
+			c.ajouter();
+		} else {
+			System.out.println("Cette emplacement est deja louer sur cette periode, ou une partie de cette periode.");
+		}
 	}
 
 	@Override
@@ -136,49 +152,76 @@ public abstract class Emplacements implements ajoutSuppr,ajoutLocRes,Serializabl
 		
 		Scanner scann = new Scanner(System.in);
 		
-		//Date de debut
-		System.out.println("Date de debut de la location");
-		System.out.println("Année :");
-		int an=scann.nextInt();
-		System.out.println("Mois : ");
-		int mois=scann.nextInt();
-		System.out.println("Jour : ");
-		int jour=scann.nextInt();
+		int an, mois, jour, an2, mois2, jour2;
+		
+		do {
+			//Date de debut
+			System.out.println("Date de debut de la location");
+			System.out.println("Année :");
+			an=scann.nextInt();
+			System.out.println("Mois : ");
+			mois=scann.nextInt();
+			System.out.println("Jour : ");
+			jour=scann.nextInt();
+		} while (Principal.verifFormatDate(jour, mois, an));
 				
 		GregorianCalendar g=new GregorianCalendar(an,mois,jour);
 		Date deb= g.getGregorianChange();
-				
-		//Date de fin
-		System.out.println("Date de fin de la location");
-		System.out.println("Année :");
-		int an2=scann.nextInt();
-		System.out.println("Mois : ");
-		int mois2=scann.nextInt();
-		System.out.println("Jour : ");
-		int jour2=scann.nextInt();
+		
+		do {
+			//Date de fin
+			System.out.println("Date de fin de la location");
+			System.out.println("Année :");
+			an2=scann.nextInt();
+			System.out.println("Mois : ");
+			mois2=scann.nextInt();
+			System.out.println("Jour : ");
+			jour2=scann.nextInt();
+		} while (Principal.verifFormatDate(jour2, mois2, an2));
 				
 		GregorianCalendar g2=new GregorianCalendar(an2,mois2,jour2);
 		Date fin= g2.getGregorianChange();
 				
 		scann.close();
-				
-		//creation
-		Reservation r = new Reservation(this,c,deb,fin);
+		if (verifDate(deb, fin)){
+			//creation
+			Reservation r = new Reservation(this,c,deb,fin);
+			
+			//ajout
+			ArrayList<Reservation> tmp1 = this.getTabreserv();
+			tmp1.add(r);
+			this.setTabreserv(tmp1);
+			
+			//ajout des date pour le tabrecap
+			HashMap <Date,Date> tmp = this.getTabrecap();
+			tmp.put(deb, fin);
+			this.setTabrecap(tmp);
+			
+			//ajout pour le client
+			ArrayList<Reservation> tmp2 = c.getTabreserv();
+			tmp2.add(r);
+			c.setTabreserv(tmp2);
+			
+			//enregistrement
+			r.ajouter();
+			this.ajouter();
+			c.ajouter();
+		 }
+	}
+	
+	
+	public boolean verifDate(Date deb, Date fin){
+		boolean ok=true;
 		
-		//ajout
-		ArrayList<Reservation> tmp1 = this.getTabreserv();
-		tmp1.add(r);
-		this.setTabreserv(tmp1);
+		for (Date d : tabrecap.keySet()){
+			if (d.after(deb)){
+				ok=false;
+			} else if (tabrecap.get(d).before(fin)){
+				ok=false;
+			}
+		}
 		
-		//ajout pour le client
-		ArrayList<Reservation> tmp2 = c.getTabreserv();
-		tmp2.add(r);
-		c.setTabreserv(tmp2);
-		
-		//enregistrement
-		r.ajouter();
-		this.ajouter();
-		c.ajouter();
+		return ok;
 	}
 	
 	
@@ -226,11 +269,11 @@ public abstract class Emplacements implements ajoutSuppr,ajoutLocRes,Serializabl
 		this.locEnCour = locEnCour;
 	}
 
-	public ArrayList <Location> getTabrecap() {
+	public HashMap <Date, Date> getTabrecap() {
 		return tabrecap;
 	}
 
-	public void setTabrecap(ArrayList <Location> tabrecap) {
+	public void setTabrecap(HashMap <Date, Date> tabrecap) {
 		this.tabrecap = tabrecap;
 	}
 
@@ -274,6 +317,10 @@ public abstract class Emplacements implements ajoutSuppr,ajoutLocRes,Serializabl
 			System.out.println(r.numRes+" "+r.getClt().numc+" "+r.getDtdeb()+" "+r.getDtfin()+" "+r.duree());
 		}
 		
-		//plus le tableau recapitulatif ... MAIS C'EST QUOI ?
+		System.out.println("Tableau recapitulatif :");
+		System.out.println("Date de debut | Date de fin  (de location/reservation)");
+		for (Date d : tabrecap.keySet()){
+			System.out.println(tabrecap.get(d).toString()+" "+d.toString());
+		}
 	}
 }
